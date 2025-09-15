@@ -1,0 +1,42 @@
+import java.util.Scanner;
+public class Assignment2 {
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in );
+        // My name is Nick and I am majoring in Cybersecurity.
+        System.out.println("How many seconds are in a minute?");
+        String answer1 = sc.next();
+        int score = 0; //this initializes the score of the person taking the quiz
+        if (answer1.equals("60") || answer1.equals("sixty")) {
+            System.out.println("Correct!");
+            score += 1;
+        } 
+        else {
+            System.out.println("Incorrect");
+        }
+
+        System.out.println("Who is the current president of the United States?");
+        String answer2 = sc.next(); 
+        if (answer2.equals("trump") || answer2.equals("Trump")) {
+            System.out.println("Correct!");
+            score += 1;
+        } 
+        else {
+            System.out.println("Incorrect");
+        }
+
+        System.out.println("How many hours are in a day?");
+        String answer3 = sc.next();
+        if (answer3.equals("24"))  {
+            System.out.println("Correct!");
+            score += 1;
+        }
+        else {
+            System.out.println("Incorrect");
+        }
+        System.out.println("Thanks for taking the quiz. You score a " + score + "/3");
+        sc.close();
+
+    }//main
+}//Assignment2
+
+// I learned how to better use if/else statements, how to store variables, and also how to make a reiterating variable that grows each iteration.
