@@ -1,0 +1,15 @@
+import java.util.Scanner;
+public class Assignment3 {
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What is your first name?");
+        String firstName = sc.nextLine();
+        for (int i = 0; i < firstName.length(); i++) {
+            System.out.println(firstName.charAt(i));
+        }//for
+        sc.close();
+    }//main
+}//Assignment3
+
+//I used google to discover this. Based on my understanding of this loop, it bases the iteration on the length of the name
+//and prints each character based on the iteration number that the loop is on.
