@@ -1,0 +1,37 @@
+
+import java.sql.Time;
+import java.util.Scanner;
+class Debug {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter your yearly salary");
+        int salary = sc.nextInt();
+        System.out.println("Enter your yearly expenses");
+        int expenses = sc.nextInt();
+        System.out.println("Enter the amount of people in your household");
+        int people = sc.nextInt();
+    //gets user input for salary, expenses, and number of people in household
+
+        int additionalTaxReduction = 0;
+        for(int i = 0; i <= people; i++){
+            additionalTaxReduction += 2;
+        }
+//The loop starts at 0, adds 2 for each person plus one extra Time
+
+        int taxReduction = 0;
+        taxReduction += additionalTaxReduction;
+        if(salary > 50000 && people > 3){
+            taxReduction += 10;
+            System.out.println("You get a " + taxReduction+ "% reduction on taxes.");
+        } else if(salary > 30000 && people > 4){
+            taxReduction += 9;
+            System.out.println("You get a " + taxReduction+ "% reduction on taxes.");
+        } else if(salary > 70000 && people > 2){
+            taxReduction += 5;
+            System.out.println("You get a " + taxReduction+ "% reduction on taxes.");
+        } else {
+            System.out.println("No applicable reduction on taxes found.");
+        }
+// initializes the Tax reduction and adds the additional reducton. The if statement checks the salary and size of the household to dertermine if more reductions need to happen. If no conditions are met, then it prints there does not need to be another reducton.
+    }
+}
