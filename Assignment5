@@ -1,0 +1,168 @@
+/*
+for this one, if you remember, I asked you to come up with a 'reason' for a function and implement it. 
+Now you get to do it! yay!!!!!
+please go a little more complex than just simple math/simple printing for the function
+feel free to google some inspiration though :)
+*/
+
+/* Nick Kendra
+* Prog4Kendra
+* Due: February 20th, 2025 before 9:00AM
+*
+* Purpose: This program tracks payment for movie orders, calculates costs based on rating and length, applies service charges and tax, and generates a summary report for multiple customers.
+* 
+* Input: Customer ID, Customer Name, Number of movies, Movie length, Rating
+*
+* Output: Total cost, Service charge, Total due, Summary report
+*
+* Certification of Authenticity: I certify that this lab is entirely my own work.
+*/
+
+import java.util.*;
+public class Assignment5 {
+	//stores variables, continues loop when any ID besides 0 is entered to allow for more data.
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int customerCount = 0;
+        int highestCustomerId = 0;
+        int lowestCustomerId = 0;
+        int customerId = 0;
+        int numberOfMovies = 0;
+        double highestCharge = Double.MIN_VALUE;
+        double lowestCharge = Double.MAX_VALUE;
+        double totalRevenue = 0.0;
+        boolean continueProcessing = true;
+        String customerName = "";
+
+        while (continueProcessing) {
+            System.out.print("Enter Customer ID (0 to quit): ");
+            customerId = scanner.nextInt();
+            
+            if (customerId == 0) {
+                continueProcessing = false;//moves to final summary
+            } else {//begin requesting input about movies and customers
+                scanner.nextLine();
+                System.out.print("Enter Customer Name: ");
+                customerName = scanner.nextLine();
+                
+                do {
+                    System.out.print("Enter number of movies ordered: ");
+                    numberOfMovies = scanner.nextInt();
+                } while (numberOfMovies <= 0);
+                
+                double movieCost = chooseMovies(scanner, numberOfMovies);
+                double serviceCharge = calcServiceCharge(numberOfMovies, movieCost);
+                double totalDue = calcTotalDue(movieCost, serviceCharge);
+                
+                outputResults(customerName, customerId, numberOfMovies, movieCost, serviceCharge, totalDue);
+                
+                customerCount++;
+                totalRevenue += totalDue;
+                
+                if (totalDue > highestCharge) {
+                    highestCharge = totalDue;
+                    highestCustomerId = customerId;
+                }
+                if (totalDue < lowestCharge) {
+                    lowestCharge = totalDue;
+                    lowestCustomerId = customerId;
+                }
+            }//else
+        }//while
+        
+        displaySummary(customerCount, highestCharge, highestCustomerId, lowestCharge, lowestCustomerId, totalRevenue);
+        scanner.close();
+    }//main
+ 
+    
+    //calculates the total movie cost based on length and rating.
+    public static double chooseMovies(Scanner scanner, int numberOfMovies) {
+        double totalCost = 0.0;
+        double costPerMinute = 0.0;
+        int movieLength = 0;
+        char movieRating = ' ';
+        
+        for (int i = 0; i < numberOfMovies; i++) {
+            do {
+                System.out.print("Enter movie length (1-300 min): ");
+                movieLength = scanner.nextInt();
+            } while (movieLength < 1 || movieLength > 300);
+
+            do {
+                System.out.print("Enter movie rating (G, P, R, X, O): "); 
+                movieRating = Character.toUpperCase(scanner.next().charAt(0));
+            } while ("GPRXO".indexOf(movieRating) == -1);
+
+            switch (movieRating) {
+                case 'G':
+                    costPerMinute = 0.028;
+                    break;
+                case 'P':
+                    costPerMinute = 0.0425;
+                    break;
+                case 'R':
+                    costPerMinute = 0.053;
+                    break;
+                case 'X':
+                    costPerMinute = 0.233;
+                    break;
+                default:
+                    costPerMinute = 0.06;
+                    break;
+            }//switch
+
+            totalCost += movieLength * costPerMinute;
+        } //for
+        return totalCost;
+    }//chooseMovies
+ 
+    
+    //calculates the service charge based on the number of movies ordered.
+    public static double calcServiceCharge(int numberOfMovies, double totalCost) {
+        double serviceRate;
+        if (numberOfMovies <= 4) {
+            serviceRate = 0.14;
+        } else if (numberOfMovies <= 7) {
+            serviceRate = 0.10;
+        } else if (numberOfMovies <= 12) {       
+            serviceRate = 0.08;
+        } else {
+            serviceRate = 0.05;
+        }//if-else
+        return totalCost * serviceRate;
+    }//calcServiceCharge
+
+    
+    //calculates the total due amount, including tax.
+    public static double calcTotalDue(double movieCost, double serviceCharge) {
+        double tax = 0.0825 * (movieCost + serviceCharge);
+        return movieCost + serviceCharge + tax;
+    }//calcTotalDue
+
+    
+    //displays transaction details for a customer.
+    public static void outputResults(String customerName, int customerId, int numberOfMovies, double movieCost, double serviceCharge, double totalDue) {
+        System.out.println("\nCustomer ID: " + customerId);
+        System.out.println("Customer Name: " + customerName);
+        System.out.println("Movies Ordered: " + numberOfMovies);
+        System.out.println("Total Movie Cost: $" + String.format("%.2f", movieCost));
+        System.out.println("Service Charge: $" + String.format("%.2f", serviceCharge));
+        System.out.println("Total Due (with tax): $" + String.format("%.2f", totalDue));
+        System.out.println();
+    } //outputResults
+
+    
+    //displays a summary of the transactions after processing.
+    public static void displaySummary(int customerCount, double highestCharge, int highestCustomerId, double lowestCharge, int lowestCustomerId, double totalRevenue) {
+        if (customerCount > 0) {
+            System.out.println("\nSummary:");
+            System.out.println("Customers Processed: " + customerCount);
+            System.out.println("Highest Charge: $" + String.format("%.2f", highestCharge) + " (Customer ID: " + highestCustomerId + ")");
+            System.out.println("Lowest Charge: $" + String.format("%.2f", lowestCharge) + " (Customer ID: " + lowestCustomerId + ")");
+            System.out.println("Total Revenue: $" + String.format("%.2f", totalRevenue));
+            System.out.println("Average Charge: $" + String.format("%.2f", totalRevenue / customerCount));  
+        } else { 
+            System.out.println("No customers were processed. Make sure to enter a positive integer to begin processing data!");
+        } //if-else
+    } //displaySummary
+} //MoviesKendra
