@@ -1,0 +1,158 @@
+import java.util.Random;
+import java.util.Scanner;
+public class MidtermProject {
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+
+        //Define the briefcase values
+        double[] briefcaseValues = {
+            0.01,1,5,10,25,50,75,100,200,300,400,500,750,
+            1000,5000,10000,25000,50000,75000,100000,
+            200000,300000,400000,500000,750000,1000000};
+
+        //Randomize the briefcase values
+        Random randomizer = new Random();
+        for (int i = 0; i < briefcaseValues.length; i++) {
+            int j = randomizer.nextInt(briefcaseValues.length);
+            double temp = briefcaseValues[i];
+            briefcaseValues[i] = briefcaseValues[j];
+            briefcaseValues[j] = temp;
+        }//for
+
+        //Keeps track of which briefcases have been opened
+        boolean[] opened = new boolean[26];
+
+        //User chooses briefcase
+        int playerCase = -1;
+        System.out.print("Pick your case (1-26): ");
+        while (playerCase == -1) {
+            if (!sc.hasNextInt()) {
+                sc.next();
+                System.out.print("Enter a number 1-26: ");
+                continue;
+            }//if
+            int n = sc.nextInt();
+            sc.nextLine();
+            if (n >= 1 && n <= 26) {
+                playerCase = n - 1;
+            } //if
+            else {
+                System.out.print("Enter a number 1-26: ");
+            }//else
+        }//while
+        System.out.println("You will keep case #" + (playerCase + 1) + " until the end.");
+
+        //Define how many cases to open each round
+        int[] rounds = {6, 5, 4, 3, 2, 1, 1, 1, 1, 1};
+        int roundNumber = 0;
+
+        //Play rounds until final decision
+        while (true) {
+            //Count how many unopened cases remain
+            int casesLeft = 0;
+            for (int i = 0; i < 26; i++) {
+                if (!opened[i]) casesLeft++;
+            }//for
+
+            //Stop when only two cases remain 
+            if (casesLeft <= 2) break;
+
+            //Determine how many cases to open this round
+            int casesToOpen = rounds[Math.min(roundNumber, rounds.length - 1)];
+            int availableToOpen = 0;
+            for (int i = 0; i < 26; i++) if (!opened[i] && i != playerCase) availableToOpen++;
+            if (casesToOpen > availableToOpen) casesToOpen = availableToOpen;
+
+            System.out.println("\nRound " + (roundNumber + 1) + ": Open " + casesToOpen + " cases.");
+
+            //User opens the required number of cases
+            for (int k = 0; k < casesToOpen; k++) {
+                //Show which cases are still unopened
+                System.out.print("Unopened cases: ");
+                for (int i = 0; i < 26; i++) {
+                    if (!opened[i]) System.out.print((i + 1) + " ");
+                }//for
+                System.out.println();
+
+                //Get a valid case number from the player to open
+                int pick = -1;
+                while (pick == -1) {
+                    System.out.print("Pick a case to open: ");
+                    if (!sc.hasNextInt()) {
+                        sc.next();
+                        System.out.println("Enter a number 1-26.");
+                        continue;
+                    }//if
+                    int n = sc.nextInt();
+                    sc.nextLine();
+                    if (n >= 1 && n <= 26) {
+                        int idx = n - 1;
+                        if (idx == playerCase) {
+                            System.out.println("You cannot open your own case.");
+                        }//if
+                        else if (opened[idx]) {
+                           System.out.println("That case is already opened.");
+                        }//elif 
+                        else {
+                            pick = idx;
+                        }//else
+                    }//if
+                    else {
+                        System.out.println("Enter a number 1-26.");
+                    }//else
+                }//while
+
+                //Mark chosen case opened and show its value
+                opened[pick] = true;
+                System.out.printf("You opened case #%d which contained $%.2f%n", pick + 1, briefcaseValues[pick]);
+            }//for
+
+            //Calculates the banker's offer based on remaining values
+            double sum = 0;
+            int count = 0;
+            for (int i = 0; i < 26; i++) {
+                if (!opened[i]) {
+                    sum += briefcaseValues[i];
+                    count++;
+                }//if
+            }//for
+            double offer = Math.round((sum / count) * 0.90);
+            System.out.println("\nThe banker offers you: $" + (long) offer);
+
+            //Ask player to take the deal or not
+            System.out.print("Deal or no deal (D/N)? ");
+            String decision = sc.nextLine().trim().toUpperCase();
+            if (decision.equals("D")) {
+                System.out.println("You accepted the deal of $" + (long) offer);
+                System.out.printf("Your case contained $%.2f%n", briefcaseValues[playerCase]);
+                sc.close();
+                return;
+            }//if
+            else {
+                System.out.println("No deal!");
+            }//else
+
+            roundNumber++;
+        }//while
+
+        //Find the last remaining other case
+        int lastCase = -1;
+        for (int i = 0; i < 26; i++) {
+            if (!opened[i] && i != playerCase) {
+                lastCase = i;
+                break;
+            }//if
+        }//for
+
+        //Give player option to switch cases
+        System.out.println("\nLast two cases: #" + (playerCase + 1) + " and #" + (lastCase + 1));
+        System.out.print("Do you want to switch cases (Y/N)? ");
+        String switchDecision = sc.nextLine().trim().toUpperCase();
+        int finalCase = switchDecision.equals("Y") ? lastCase : playerCase;
+
+        //Reveal the player's final prize
+        System.out.printf("You ended up with case #%d which contained $%.2f%n", finalCase + 1, briefcaseValues[finalCase]);
+
+        sc.close();
+    }//main 
+}//MidtermProject
