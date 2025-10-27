@@ -1,0 +1,65 @@
+public class student {
+    String name;
+ String year;
+ double gpa;
+ int id;
+ public student(String n, String y, double g, int i){
+ name = n;
+ year = y;
+ gpa = g;
+ id = i;
+ }//student
+
+ //new method
+ public boolean HonorRoll(){
+    if (gpa > 3.6){
+        return true;
+    }
+    else {
+        return false;
+    }
+ }//HonorRoll
+
+ //new method
+ public boolean doYouGetFreeLunch(int freeLunchID){
+    return this.id == freeLunchID;
+ }//doYouGetFreeLunch
+
+}//student
+
+
+public class main {
+    public static void main(String[] args) throws Exception {
+        student s1 = new student("John Smith", "Freshman", 1.65, 83418);
+        student s2 = new student("Ben Prata", "Sophomore", 3.50, 31284);
+        student s3 = new student("Nick Kendra", "Sophomore", 3.63, 45821);
+        student s4 = new student("Ella Kelly", "Senior", 2.85, 28572);
+        student s5 = new student("Caleb Kroon", "Sophomore", 4.00, 97236);
+
+        if (s1.HonorRoll()) System.out.println(s1.name + " is on the honor roll."); 
+        else System.out.println(s1.name + " is not on the honor roll.");
+        if (s2.HonorRoll()) System.out.println(s2.name + " is on the honor roll."); 
+        else System.out.println(s2.name + " is not on the honor roll.");
+        if (s3.HonorRoll()) System.out.println(s3.name + " is on the honor roll."); 
+        else System.out.println(s3.name + " is not on the honor roll.");
+        if (s4.HonorRoll()) System.out.println(s4.name + " is on the honor roll."); 
+        else System.out.println(s4.name + " is not on the honor roll.");
+        if (s5.HonorRoll()) System.out.println(s5.name + " is on the honor roll."); 
+        else System.out.println(s5.name + " is not on the honor roll.");
+
+        int freeLunchID = 45821;
+        System.out.println("Today's randomly generated id number is: " + freeLunchID);
+        if (s1.doYouGetFreeLunch(freeLunchID)) System.out.println(s1.name + " gets free lunch!");
+        if (s2.doYouGetFreeLunch(freeLunchID)) System.out.println(s2.name + " gets free lunch!");
+        if (s3.doYouGetFreeLunch(freeLunchID)) System.out.println(s3.name + " gets free lunch!");
+        if (s4.doYouGetFreeLunch(freeLunchID)) System.out.println(s4.name + " gets free lunch!");
+        if (s5.doYouGetFreeLunch(freeLunchID)) System.out.println(s5.name + " gets free lunch!");
+
+
+    }//main
+}//main
+
+/*
+ * This assignement was fairly simple to me. However when I took SD1 last semester we built classes differently but the way taught in this course is way easier. 
+ * Based on the instructions I think I did what was asked, I was just unsure if I should use a studnets set ID number or randomly generate it, but I wanted to show that it works.
+ */
