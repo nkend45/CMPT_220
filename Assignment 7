@@ -1,0 +1,64 @@
+public class enemy {
+    int health;
+    int damage;
+
+    public enemy(int h, int d){
+        health = h;
+        damage = d;
+    }
+
+    void attack(){
+        System.out.println("the enemy attacks");
+    }
+}
+
+public class main {
+    public static void main(String[] args) {
+
+        //create a generic enemy and call its functions
+        enemy e1 = new enemy(75,15);
+        e1.attack();
+        //create a fire and an ice wizard and call all functions
+        wizard fW1 = new wizard(120, 34, "fire");
+        fW1.attack();
+        fW1.damageType();
+        wizard iW1 = new wizard(100, 26, "ice");
+        iW1.attack();
+        iW1.damageType();
+        //create a goblin and call its functions
+        goblin g1 = new goblin (88, 13);
+        g1.attack();
+    }
+}
+
+public class goblin extends enemy{
+
+    //Needs constructor
+    public goblin(int h, int d) {
+        super(h, d);
+    }
+    //needs method to overwrite attack in enemy to say "the goblin gobbles" instead of "the enemy attacks
+    @Override 
+    void attack(){
+        System.out.println("the goblin gobbles");
+    }
+}
+
+public class wizard extends enemy{
+    String type;
+    public wizard(int h, int d, String t) {
+        super(h, d);
+        type = t;
+    }
+    void damageType(){
+        //if the type of wizard is 'fire', then print "this wizard shoots a fireball"
+        if (type.equals("fire")){
+            System.out.println("this wizard shoots a fireball");
+        }
+        
+        //if the type is 'ice', then print "this wizard shoots an iceball"
+        else if (type.equals("ice")){
+            System.out.println("this wizard shoots an iceball");
+        }
+    }
+}
