@@ -1,0 +1,33 @@
+import java.io.*; 
+import java.util.ArrayList; 
+import java.util.List; 
+import java.util.Scanner; 
+
+public class Main { 
+    public static void main(String[] args){ 
+    //do you need something to start? 
+        File inputfile = new File("practice.txt"); 
+
+        List<String> gpas = new ArrayList<>();
+    try { 
+        Scanner input = new Scanner(inputfile); 
+        while(input.hasNext()){ 
+    //what do we do at every line of the file? 
+            String name = input.next();
+            double gpa = input.nextDouble();
+
+            if (gpa > 3.5){
+                gpas.add(name);
+            }//if
+        }//while
+
+    } catch (FileNotFoundException e) { 
+        throw new RuntimeException(e); 
+    } 
+    //optional if you want to keep this, just to show what the indices are of the list you created 
+    System.out.println(gpas); 
+    } 
+}
+
+//Your demonstrations in class made this assignment pretty painless. I honestly think file use is not too hard of a concept and it is pretty universal.
+//I am not excited to learn algorithm sorting if we get to that :(
